@@ -1,0 +1,77 @@
+################################################################################
+#   EPM configuration file to create the autowap package
+#
+#   Note: Expects ${srcdir} to be defined externally
+#
+#   24 November, 2023 - E M Thornber
+#   Created
+#
+#   27 November, 2023 - E M Thornber
+#   Changed name of service script to autowapctl
+#
+################################################################################
+#
+# Utilities
+$AWK=/usr/bin/awk
+$SCTL=/usr/bin/systemctl
+# Directories
+$autowap=/usr/local/etc/autowap
+$bindir=/usr/local/bin
+$config=config
+$script=scripts
+$service=/usr/lib/systemd/system
+
+%product Create a WAP on a RPi if home WiFi is not available
+%copyright 2023 merg.org.uk
+%vendor Enchanted Systems Limited
+%license LICENSE
+%readme README.md
+%description A service to set up a WAP if no configured WiFi routers can be found
+%version ${version}
+
+%requires network-manager
+
+%incompat autohs
+
+d 755 root root /usr -
+d 755 root root /usr/lib -
+d 755 root root /usr/lib/systemd -
+d 755 root root ${service} -
+d 755 root root /usr/local -
+d 755 root root ${bindir} -
+d 755 root root /usr/local/etc -
+d 755 root root $autowap -
+
+# AutoHotspot script, and service
+f 755 root root ${bindir}/autowapctl          ${srcdir}/${script}/autowapctl.bash
+f 644 root root ${service}/autowapctl.service ${srcdir}/${config}/autowapctl.service
+
+# AutoHotspot configuration files
+f 644 root root ${autowap}/autowap.conf   ${srcdir}/${config}/autowap.conf
+
+%postinstall <<EOF
+
+${SCTL} daemon-reload
+${SCTL} enable autowapctl
+
+EOF
+
+%preremove <<EOF
+
+${SCTL} stop autowap
+${SCTL} disable autowapctl
+
+EOF
+
+%postremove <<EOF
+# Source debconf library.
+. /usr/share/debconf/confmodule
+
+if [ "$$1" = "purge" ]; then
+    # Remove my changes to the debconf db.
+    db_purge
+fi
+
+${SCTL} daemon-reload
+
+EOF

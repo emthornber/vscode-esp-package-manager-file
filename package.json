@@ -1,0 +1,42 @@
+{
+  "name": "esp-package-manager-file",
+  "repository": {
+    "url": "https://github.com/emthornber/vscode-esp-package-manager-file"
+  },
+  "displayName": "esp-package-manager-file",
+  "description": "Language support for ESP Package Manager files",
+  "version": "0.1.0",
+  "publisher": "emthornber",
+  "engines": {
+    "vscode": "^1.88.0"
+  },
+  "license": "MIT",
+  "categories": [
+    "Programming Languages"
+  ],
+  "contributes": {
+    "languages": [
+      {
+        "id": "esp-package-manager-file",
+        "aliases": [
+          "esp package manager file",
+          "esp-package-manager-file"
+        ],
+        "extensions": [
+          ".epm"
+        ],
+        "configuration": "./language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "esp-package-manager-file",
+        "scopeName": "source.espPackageManagerFile",
+        "path": "./syntaxes/esp-package-manager-file.tmLanguage.json",
+        "embeddedLanguages": {
+          "meta.embedded.block.shell": "shell"
+        }
+      }
+    ]
+  }
+}

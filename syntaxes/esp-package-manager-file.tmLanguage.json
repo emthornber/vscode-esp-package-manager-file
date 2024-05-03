@@ -1,0 +1,90 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "esp package manager file",
+  "patterns": [
+    {
+      "include": "#package-definitions"
+    }
+  ],
+  "repository": {
+    "package-definitions": {
+      "patterns": [
+        {
+          "include": "#single-line-comments"
+        },
+        {
+          "include": "#directives"
+        },
+        {
+          "include": "#variables"
+        },
+        {
+          "include": "#file-definitions"
+        },
+        {
+          "include": "#here-documents"
+        }
+      ]
+    },
+    "single-line-comments": {
+      "patterns": [
+        {
+          "name": "comment.line",
+          "match": "#.*$"
+        }
+      ]
+    },
+    "directives": {
+      "patterns": [
+        {
+          "name": "entity.name.type",
+          "match": "^%[^ \\t]+"
+        }
+      ]
+    },
+    "variables": {
+      "patterns": [
+        {
+          "name": "variable.other",
+          "match": "^\\$[^ \\t]+="
+        },
+        {
+          "name": "variable.parameter",
+          "match": "\\${[^ \\t]+}"
+        },
+        {
+          "name": "variable.parameter",
+          "match": "\\$[^ \t/-]+"
+        }
+      ]
+    },
+    "file-definitions": {
+      "patterns": [
+        {
+          "name": "entity.name.type",
+          "match": "\\b(C|c|D|d|F|f|I|i|L|l|R)\\b"
+        }
+      ]
+    },
+    "here-documents": {
+      "begin": "<<(\\w+)$",
+      "end": "^\\1$",
+      "beginCaptures": {
+        "0": {
+          "name": "keyword"
+        }
+      },
+      "endCaptures": {
+        "0": {
+          "name": "keyword"
+        }
+      },
+      "patterns": [
+        {
+          "include": "source.shell"
+        }
+      ]
+    }
+  },
+  "scopeName": "source.espPackageManagerFile"
+}

@@ -8,7 +8,7 @@
   "version": "0.1.0",
   "publisher": "emthornber",
   "engines": {
-    "vscode": "^1.88.0"
+    "vscode": "^1.94.0"
   },
   "license": "MIT",
   "categories": [
